@@ -62,7 +62,7 @@ class Ground {
   load() {
     this.geometry = new THREE.PlaneGeometry(this.width, this.height);
     this.material = new THREE.MeshPhongMaterial({
-      color: 0xffffff,
+      color: 0xff8899,
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.receiveShadow = true;
@@ -72,22 +72,27 @@ class Ground {
 let player = new Ball(0, 0, 0, 1);
 player.load();
 scene.add(player.mesh, player.light);
-camera.position.y = 10;
-camera.lookAt(
-  player.mesh.position.x,
-  player.mesh.position.y,
-  player.mesh.position.z
-)
+camera.position.y = player.mesh.position.y;
+camera.position.x = player.mesh.position.x;
+camera.position.z = player.mesh.position.z + 10;
+
 
 let ground = new Ground(100, 1000);
 ground.load();
-//ground.mesh.position.z = player.mesh.position.z - player.mesh.rad;
-//scene.add(ground.mesh);
+ground.mesh.rotation.x = Math.PI;
+ground.mesh.position.set(0, player.mesh.position.y - player.r, 0)
 
+scene.add(ground.mesh);
+camera.position.set(0, player.mesh.position.y + 10, 10);
+camera.lookAt(
+  player.mesh.position.x,
+  player.mesh.position.y,
+  player.mesh.position.z,
+)
 function animate(t = 0) {
     player.mesh.rotation.x = t * -0.001;
     //camera.position.z = player.mesh.position.z + 10;
-    //ground.mesh.rotation.x = t * 0.001;
+    ground.mesh.rotation.x = t * 0.001;
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 }
