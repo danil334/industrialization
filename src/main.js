@@ -4,6 +4,8 @@ import * as CANNON from 'cannon'
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const w = window.innerWidth;
 const h = window.innerHeight;
+const ballDX = -0.0001;
+const ballDZ = 0.0001;
 renderer.setSize(w, h);
 document.body.appendChild(renderer.domElement);
 
@@ -77,26 +79,38 @@ camera.position.x = player.mesh.position.x;
 camera.position.z = player.mesh.position.z + 10;
 
 
-let ground = new Ground(100, 1000);
+let ground = new Ground(20, 1000);
 ground.load();
-ground.mesh.rotation.x = Math.PI;
+ground.mesh.rotation.x = 80;
 ground.mesh.position.set(0, player.mesh.position.y - player.r, 0)
 
 scene.add(ground.mesh);
-camera.position.set(0, player.mesh.position.y + 10, 10);
+
+
+
 camera.lookAt(
   player.mesh.position.x,
   player.mesh.position.y,
   player.mesh.position.z,
 )
 function animate(t = 0) {
-    player.mesh.rotation.x = t * -0.001;
+    // player.mesh.rotation.x = t * -0.001;
+    camera.position.set(0, player.mesh.position.y + 5, player.mesh.position.z + 10);
     //camera.position.z = player.mesh.position.z + 10;
-    ground.mesh.rotation.x = t * 0.001;
+    //ground.mesh.rotation.x = t * 0.001;
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 }
 
+
+
+function onKeyDown(event) {
+  let keycode = event.which;
+  if (keycode == 38) {
+    player.mesh.rotation.x += ballDX * 1000;
+  }
+}
+document.addEventListener("keydown", onKeyDown, false);
 animate();
 
 // Handle window resize
