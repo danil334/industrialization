@@ -81,8 +81,8 @@ camera.lookAt(
 
 let ground = new Ground(100, 1000);
 ground.load();
-ground.mesh.position.z = player.mesh.position.z - player.mesh.rad;
-scene.add(ground.mesh);
+//ground.mesh.position.z = player.mesh.position.z - player.mesh.rad;
+//scene.add(ground.mesh);
 
 function animate(t = 0) {
     player.mesh.rotation.x = t * -0.001;
