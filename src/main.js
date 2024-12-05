@@ -16,7 +16,7 @@ const aspect = w / h;
 const near = 0.1;
 const far = 1000;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.position.z = 10; // Adjusted camera position
+camera.position.z = 15; // Adjusted camera position
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0077ff); // Set background color
@@ -64,24 +64,30 @@ class Ground {
     this.material = new THREE.MeshPhongMaterial({
       color: 0xffffff,
     });
-    this.mesh = new THREE.mesh(this.geometry, this.material);
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.receiveShadow = true;
   }
 }
 
-let player = new Ball(0, 0, 0, 0.5);
+let player = new Ball(0, 0, 0, 1);
 player.load();
 scene.add(player.mesh, player.light);
-camera.position.y = 5;
+camera.position.y = 10;
 camera.lookAt(
   player.mesh.position.x,
   player.mesh.position.y,
   player.mesh.position.z
 )
 
+let ground = new Ground(100, 1000);
+ground.load();
+ground.mesh.position.z = player.mesh.position.z - player.mesh.rad;
+scene.add(ground.mesh);
+
 function animate(t = 0) {
     player.mesh.rotation.x = t * -0.001;
     //camera.position.z = player.mesh.position.z + 10;
+    //ground.mesh.rotation.x = t * 0.001;
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 }
