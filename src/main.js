@@ -17,6 +17,9 @@ document.body.appendChild(labelRenderer.domElement);
 const clock = new THREE.Clock();
 let delta;
 
+// force for jump
+const impulseJump = new CANNON.Vec3(0, 500/60, 0);
+
 const loader = new THREE.TextureLoader();
 const texture = loader.load('resources/alien.jpg');
 texture.colorSpace = THREE.SRGBColorSpace;
@@ -128,12 +131,25 @@ camera.lookAt(
 const instructions = document.createElement("div");
 instructions.innerHTML = "Avoid hitting RED, <br>press SPACE to hit GREEN<br>and answer questions";
 const objectInstructions = new CSS2DObject(instructions);
+
+// start button
+const startBtn = document.createElement("div");
+startBtn.innerHTML = "<button>Start</button>"
+const objectStartBtn = new CSS2DObject(startBtn);
+
 objectInstructions.position.set(
   player.mesh.position.x - 10,
   player.mesh.position.y + 10, 
-  player.mesh.position.z -10
+  player.mesh.position.z - 10
 );
 ground.mesh.add(objectInstructions);
+
+objectStartBtn.position.set(
+  player.mesh.position.x - 30,
+  player.mesh.position.y + 5,
+  player.mesh.position.z - 10
+)
+ground.mesh.add(objectStartBtn);
 
 function animate(t = 0) {
   //document.body.innerHTML = sphereBody.position;
@@ -145,7 +161,7 @@ function animate(t = 0) {
   //camera.position.z = player.mesh.position.z + 10;
   //ground.mesh.rotation.x = t * 0.001;
   camera.lookAt(
-    player.mesh.position.x,
+    0,
     player.mesh.position.y,
     player.mesh.position.z
   );
@@ -163,16 +179,13 @@ function animate(t = 0) {
   );
 }
 
-
-
-function onKeyDown(event) {
-  let keycode = event.which;
-  if (keycode == 38) {
-    player.mesh.rotation.x += ballDX * 1000;
-  }
-}
-document.addEventListener("keydown", onKeyDown, false);
 animate();
+
+
+// jump function
+function jump() {
+  sphereBody.applyImpulse(impulseJump);
+}
 
 // Handle window resize
 window.addEventListener('resize', () => {
