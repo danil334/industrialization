@@ -13,7 +13,7 @@
     "vite": "^6.0.1"
   },
   "dependencies": {
-    "cannon": "^0.6.2",
+    "cannon-es": "^0.20.0",
     "gh-pages": "^6.2.0",
     "three": "^0.171.0"
   }
