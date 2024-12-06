@@ -1,14 +1,19 @@
 import * as THREE from 'three';
-import * as CANNON from 'cannon-es'
+import * as CANNON from 'cannon-es';
+import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/Addons.js';
 
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.setSize(window.innerWidth, window.innerHeight);
+labelRenderer.domElement.style.position = 'absolute';
+labelRenderer.domElement.style.top = '0px';
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const w = window.innerWidth;
 const h = window.innerHeight;
 const ballDX = -0.0001;
-const ballDZ = 0.0001;
+// const ballDZ = 0.0001;
 renderer.setSize(w, h);
 document.body.appendChild(renderer.domElement);
-
+document.body.appendChild(labelRenderer.domElement);
 const clock = new THREE.Clock();
 let delta;
 
@@ -95,7 +100,7 @@ sphereBody.addShape(sphereShape);
 world.addBody(sphereBody);
 sphereBody.position.set(player.x, player.y, player.z);
 
-let ground = new Ground(20, 1000);
+let ground = new Ground(15, 1000);
 ground.load();
 ground.mesh.rotateX(-Math.PI / 2)
 
@@ -113,12 +118,29 @@ camera.lookAt(
   player.mesh.position.y,
   player.mesh.position.z,
 )
-function animate() {
+
+// text 
+
+// const labelRenderer = new CSS2DRenderer();
+// labelRenderer.setSize(window.innerWidth, window.innerHeight);
+// labelRenderer.domElement.style.position = "absolute";
+// document.body.appendChild(labelRenderer.domElement);
+const instructions = document.createElement("div");
+instructions.innerHTML = "Avoid hitting RED, <br>press SPACE to hit GREEN<br>and answer questions";
+const objectInstructions = new CSS2DObject(instructions);
+objectInstructions.position.set(
+  player.mesh.position.x - 10,
+  player.mesh.position.y + 10, 
+  player.mesh.position.z -10
+);
+ground.mesh.add(objectInstructions);
+
+function animate(t = 0) {
   //document.body.innerHTML = sphereBody.position;
   requestAnimationFrame(animate);
   // player.mesh.rotation.x = t * -0.001;
   delta = Math.min(clock.getDelta(), 0.1)
-  
+  labelRenderer.render(scene, camera);
   camera.position.set(0, 5, player.mesh.position.z + 10);
   //camera.position.z = player.mesh.position.z + 10;
   //ground.mesh.rotation.x = t * 0.001;
@@ -128,11 +150,17 @@ function animate() {
     player.mesh.position.z
   );
   player.mesh.position.copy(sphereBody.position);
-  player.mesh.quaternion.copy(sphereBody.quaternion);
+  //player.mesh.quaternion.copy(sphereBody.quaternion);
+  player.mesh.rotation.x = t * -0.005;
   renderer.render(scene, camera);
   if (delta > 0) {
     world.step(delta);
   }
+  objectInstructions.position.set(
+    player.mesh.position.x - 500,
+    player.mesh.position.y + 1000 + 50, 
+    player.mesh.position.z
+  );
 }
 
 
@@ -153,4 +181,5 @@ window.addEventListener('resize', () => {
     renderer.setSize(w, h);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    //labelRenderer.setSize(window.innerWidth, window.innerHeight);
 });
