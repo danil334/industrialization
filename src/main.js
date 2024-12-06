@@ -16,9 +16,14 @@ document.body.appendChild(renderer.domElement);
 document.body.appendChild(labelRenderer.domElement);
 const clock = new THREE.Clock();
 let delta;
-
+const shouldMove = false;
 // force for jump
-const impulseJump = new CANNON.Vec3(0, 500/60, 0);
+const impulseJump = new CANNON.Vec3(0, 6, 0);
+// force for move right
+const pX = new CANNON.Vec3(5, 0, 0);
+const nX = new CANNON.Vec3(-5, 0, 0);
+// zero force
+const zeroV = new CANNON.Vec3(0, 0, 0);
 
 const loader = new THREE.TextureLoader();
 const texture = loader.load('resources/alien.jpg');
@@ -35,7 +40,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0077ff); // Set background color
 
 const world = new CANNON.World();
-world.gravity.set(0, -9.81, 0);
+world.gravity.set(0, -12, 0);
 
 class Ball {
   constructor(x, y, z, r) {
@@ -129,13 +134,15 @@ camera.lookAt(
 // labelRenderer.domElement.style.position = "absolute";
 // document.body.appendChild(labelRenderer.domElement);
 const instructions = document.createElement("div");
-instructions.innerHTML = "Avoid hitting RED, <br>press SPACE to hit GREEN<br>and answer questions";
+instructions.id = "ins";
+instructions.innerHTML = "Press SPACE to jump over Red,<br>hit green to answer a question and<br>score a point<br><button style='background-color:green' onclick='start();'>Start</button>";
 const objectInstructions = new CSS2DObject(instructions);
 
+const innerScript = document.createElement("script");
+innerScript.innerHTML = "function start() {document.getElementById(\"ins\").innerHTML = \"\";}"
+const objectInnerScript = new CSS2DObject(innerScript);
 // start button
-const startBtn = document.createElement("div");
-startBtn.innerHTML = "<button>Start</button>"
-const objectStartBtn = new CSS2DObject(startBtn);
+player.mesh.add(objectInnerScript);
 
 objectInstructions.position.set(
   player.mesh.position.x - 10,
@@ -144,20 +151,13 @@ objectInstructions.position.set(
 );
 ground.mesh.add(objectInstructions);
 
-objectStartBtn.position.set(
-  player.mesh.position.x - 30,
-  player.mesh.position.y + 5,
-  player.mesh.position.z - 10
-)
-ground.mesh.add(objectStartBtn);
-
 function animate(t = 0) {
   //document.body.innerHTML = sphereBody.position;
   requestAnimationFrame(animate);
   // player.mesh.rotation.x = t * -0.001;
   delta = Math.min(clock.getDelta(), 0.1)
   labelRenderer.render(scene, camera);
-  camera.position.set(0, 5, player.mesh.position.z + 10);
+  camera.position.set(0, 5, player.mesh.position.z + 8);
   //camera.position.z = player.mesh.position.z + 10;
   //ground.mesh.rotation.x = t * 0.001;
   camera.lookAt(
@@ -181,10 +181,27 @@ function animate(t = 0) {
 
 animate();
 
-
+document.addEventListener("keypress", jump, false);
 // jump function
-function jump() {
-  sphereBody.applyImpulse(impulseJump);
+function jump(event) {
+  if (event.which == 32) {
+    if (player.mesh.position.y < 1.5) {
+      sphereBody.applyImpulse(impulseJump);
+    }
+    
+  }
+}
+
+document.addEventListener("keydown", carryMove, false);
+// move functions
+
+function carryMove(event) {
+  if (event.which == 37) {
+    sphereBody.velocity.set(-5, 0, 0);
+  }
+  if (event.which == 39) {
+    sphereBody.velocity.set(5, 0, 0);
+  }
 }
 
 // Handle window resize
