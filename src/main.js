@@ -16,7 +16,7 @@ document.body.appendChild(renderer.domElement);
 document.body.appendChild(labelRenderer.domElement);
 const clock = new THREE.Clock();
 let delta;
-const shouldMove = false;
+const shouldMove = true;
 // force for jump
 const impulseJump = new CANNON.Vec3(0, 6, 0);
 // force for move right
@@ -107,7 +107,7 @@ const sphereBody = new CANNON.Body({mass: 1});
 sphereBody.addShape(sphereShape);
 world.addBody(sphereBody);
 sphereBody.position.set(player.x, player.y, player.z);
-
+const count = 0;
 let ground = new Ground(15, 1000);
 ground.load();
 ground.mesh.rotateX(-Math.PI / 2)
@@ -146,7 +146,7 @@ player.mesh.add(objectInnerScript);
 
 objectInstructions.position.set(
   player.mesh.position.x - 10,
-  player.mesh.position.y + 10, 
+  player.mesh.position.y + 10,
   player.mesh.position.z - 10
 );
 ground.mesh.add(objectInstructions);
@@ -154,6 +154,10 @@ ground.mesh.add(objectInstructions);
 function animate(t = 0) {
   //document.body.innerHTML = sphereBody.position;
   requestAnimationFrame(animate);
+  if (count > 2 && sphereBody.position.y < player.r) {
+    shouldMove = false;
+    count++;
+  } 
   // player.mesh.rotation.x = t * -0.001;
   delta = Math.min(clock.getDelta(), 0.1)
   labelRenderer.render(scene, camera);
@@ -177,6 +181,11 @@ function animate(t = 0) {
     player.mesh.position.y + 1000 + 50, 
     player.mesh.position.z
   );
+  if (shouldMove && !isInitial) {
+    sphereBody.velocity.set(5, 0, 0);
+  } else if (!isInitial) {
+    sphereBody.velocity.set(0, 0, 0);
+  }
 }
 
 animate();
@@ -196,12 +205,12 @@ document.addEventListener("keydown", carryMove, false);
 // move functions
 
 function carryMove(event) {
-  if (event.which == 37) {
-    sphereBody.velocity.set(-5, 0, 0);
-  }
-  if (event.which == 39) {
-    sphereBody.velocity.set(5, 0, 0);
-  }
+  shouldMove = true;
+}
+
+document.addEventListener("keyup", stop, false);
+function stop(event) {
+  shouldMove = false;
 }
 
 // Handle window resize
