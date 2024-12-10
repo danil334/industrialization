@@ -16,7 +16,6 @@ document.body.appendChild(renderer.domElement);
 document.body.appendChild(labelRenderer.domElement);
 const clock = new THREE.Clock();
 let delta;
-const shouldMove = true;
 // force for jump
 const impulseJump = new CANNON.Vec3(0, 6, 0);
 // force for move right
@@ -150,16 +149,18 @@ objectInstructions.position.set(
   player.mesh.position.z - 10
 );
 ground.mesh.add(objectInstructions);
+var axis = new CANNON.Vec3(0, 0, 1);
+var angle = Math.PI/2;
+sphereBody.quaternion.setFromAxisAngle(axis, angle);
 
+// ball movements
+const stopBallF = sphereBody.velocity.clone().negate().scale(1);
+let stopped = false;
 function animate(t = 0) {
   //document.body.innerHTML = sphereBody.position;
   requestAnimationFrame(animate);
-  if (count > 2 && sphereBody.position.y < player.r) {
-    shouldMove = false;
-    count++;
-  } 
   // player.mesh.rotation.x = t * -0.001;
-  delta = Math.min(clock.getDelta(), 0.1)
+  delta = Math.min(clock.getDelta(), 0.1);
   labelRenderer.render(scene, camera);
   camera.position.set(0, 5, player.mesh.position.z + 8);
   //camera.position.z = player.mesh.position.z + 10;
@@ -170,8 +171,10 @@ function animate(t = 0) {
     player.mesh.position.z
   );
   player.mesh.position.copy(sphereBody.position);
+  player.mesh.rotation.set(t * -0.003, 0, Math.PI/2);
+  //player.mesh.setRotationFromAxisAngle(axis, angle);
   //player.mesh.quaternion.copy(sphereBody.quaternion);
-  player.mesh.rotation.x = t * -0.005;
+  player.mesh
   renderer.render(scene, camera);
   if (delta > 0) {
     world.step(delta);
@@ -181,11 +184,10 @@ function animate(t = 0) {
     player.mesh.position.y + 1000 + 50, 
     player.mesh.position.z
   );
-  if (shouldMove && !isInitial) {
-    sphereBody.velocity.set(5, 0, 0);
-  } else if (!isInitial) {
+  if (stopped) {
     sphereBody.velocity.set(0, 0, 0);
   }
+  
 }
 
 animate();
@@ -201,16 +203,27 @@ function jump(event) {
   }
 }
 
-document.addEventListener("keydown", carryMove, false);
+document.addEventListener("keydown", move, false);
 // move functions
 
-function carryMove(event) {
-  shouldMove = true;
+function move(event) {
+  if (event.which == 37) {
+    stopped = false;
+    sphereBody.velocity.set(-5, 0, 0);
+    console.log("37")
+  } if (event.which == 39) {
+    stopped = false;
+    sphereBody.velocity.set(5, 0, 0);
+    console.log("39");
+  }
 }
 
 document.addEventListener("keyup", stop, false);
 function stop(event) {
-  shouldMove = false;
+  if (event.which == 37 || event.which == 39) {
+    stopped = true;
+    sphereBody.applyForce(stopBallF);
+  }
 }
 
 // Handle window resize
