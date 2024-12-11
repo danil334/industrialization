@@ -198,6 +198,9 @@ function animate(t = 0) {
   document.getElementById("score").innerHTML = "SCORE: " + score;
   //document.body.innerHTML = sphereBody.position;
   objectQuiz.visible = paused;
+  if (score == 20) {
+    scene.remove(player.mesh);
+  }
   if (!paused) {
     // player.mesh.rotation.x = t * -0.001;
     delta = Math.min(clock.getDelta(), 0.1);
@@ -252,10 +255,8 @@ function jump(event) {
         stopped = false;
         sphereBody.applyImpulse(impulseJump);
       }
-      console.log(zoneBody.position.z);
     }
     if (event.which == 71) {
-      console.log(sphereBody.position.z);
     }
   }
 }
@@ -263,6 +264,7 @@ function jump(event) {
 function showQuiz() {
   paused = true;
   putQ(qNumber);
+  console.log(qNumber);
 }
 
 // document.addEventListener("keydown", move, false);
