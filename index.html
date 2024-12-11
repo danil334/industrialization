@@ -7,10 +7,24 @@
     <style>
       body {margin: 0;}
     </style>
+    
   </head>
   <body>
     <div id="app"></div>
     <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/quizhandler.js"></script>
     <div id="ins"></div>
+    <div style="background-color: aqua; border-radius: 30px; justify-content: center; align-items: center; padding: 10px;" id="quiz">
+      <p style="font-size: large; font-family: 'Courier New', Courier, monospace;">QUESTION</p>
+      <div id="questionPlace" style="font-size: medium; font-family: 'Courier New', Courier, monospace;">
+      </div><br>
+      <button id="a" style="padding: 5px;">A</button>
+      <button id="b" style="padding: 5px;">B</button>
+      <button id="c" style="padding: 5px;">C</button>
+      <button id="d" style="padding: 5px;">D</button>
+    </div>
+    <div style="color: whitesmoke; background-color: green; padding: 5px;" id="score">
+      0
+    </div>
   </body>
 </html>
