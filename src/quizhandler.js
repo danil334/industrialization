@@ -1,12 +1,12 @@
 export const choices = {
     "s1": "A: Agricultural Innovation<br>B: Industrialization<br>C: Raw Materials<br>D: Joint stock",
     "s2": "A: The process of intellectual growth<br>B: The process of farming<br>C: Building of factories<br>D: I don\'t know",
-    "s3": "A:",
-    "s4": "",
+    "s3": "A: To drive cars<br>B: To power trains<br>C:To power brains<br>D: To farm",
+    "s4": "A: Eating<br>B: To build cars<br>C:I don't know<br>D: To power trains",
     "s5": "",
     "s6": "",
     "s7": "",
-    "s8": "",
+    "s8": "A: Farms<br>B: IDK<br>C: Islands<br>D: Factories",
     "s9": "",
     "s10": "",
     "s11": "",
@@ -31,75 +31,75 @@ export const questions = {
         answer: 'c'
     },
     "q3": {
-        question: `What constitutes industrialization?<br>${choices.s3}`,
+        question: `What was steam power used for?<br>${choices.s3}`,
         answer: 'b'
     },
     "q4": {
-        question: `What constitutes industrialization?<br>${choices.s4}`,
+        question: `What was coal used for?<br>${choices.s4}`,
         answer: 'd'
     },
     "q5": {
-        question: `What constitutes industrialization?<br>${choices.s5}`,
+        question: `What is steel?<br>${choices.s5}`,
         answer: 'b'
     },
     "q6": {
-        question: `What constitutes industrialization?<br>${choices.s6}`,
+        question: `An example of a raw material is...<br>${choices.s6}`,
         answer: 'a'
     },
     "q7": {
-        question: `What constitutes industrialization?<br>${choices.s7}`,
+        question: `Railroads were used for...<br>${choices.s7}`,
         answer: 'b'
     },
     "q8": {
-        question: `What constitutes industrialization?<br>${choices.s8}`,
+        question: `Where did many people work during the industrial revolution?<br>${choices.s8}`,
         answer: 'd'
     },
     "q9": {
-        question: `What constitutes industrialization?<br>${choices.s9}`,
+        question: `Joint stock includes...?<br>${choices.s9}`,
         answer: 'd'
     },
     "q10": {
-        question: `What constitutes industrialization?<br>${choices.s10}`,
+        question: `A capitalist belief would be...?<br>${choices.s10}`,
         answer: 'c'
     },
     "q11": {
-        question: `What constitutes industrialization?<br>${choices.s11}`,
+        question: `What did women do during the industrial revolution?<br>${choices.s11}`,
         answer: 'c'
     },
     "q12": {
-        question: `What constitutes industrialization?<br>${choices.s12}`,
+        question: `What did children do during the industrial revolution?<br>${choices.s12}`,
         answer: 'a'
     },
     "q13": {
-        question: `What constitutes industrialization?<br>${choices.s13}`,
+        question: `An example of a middle-class job would be...?<br>${choices.s13}`,
         answer: 'c'
     },
     "q14": {
-        question: `What constitutes industrialization?<br>${choices.s14}`,
+        question: `What was the working class?<br>${choices.s14}`,
         answer: 'b'
     },
     "q15": {
-        question: `What constitutes industrialization?<br>${choices.s15}`,
+        question: `Did education become more accessible?<br>${choices.s15}`,
         answer: 'd'
     },
     "q16": {
-        question: `What constitutes industrialization?<br>${choices.s16}`,
+        question: `Marxist beliefs include?<br>${choices.s16}`,
         answer: 'd'
     },
     "q17": {
-        question: `What constitutes industrialization?<br>${choices.s17}`,
+        question: `What is socialism?<br>${choices.s17}`,
         answer: 'a'
     },
     "q18": {
-        question: `What constitutes industrialization?<br>${choices.s18}`,
+        question: `Did urbanization occur during industrial revolution?<br>${choices.s18}`,
         answer: 'b'
     },
     "q19": {
-        question: `What constitutes industrialization?<br>${choices.s19}`,
+        question: `Did the colonies benefit Britain during the industrial revolution?<br>${choices.s19}`,
         answer: 'c'
     },
     "q20": {
-        question: `What constitutes industrialization?<br>${choices.s20}`,
+        question: `Did leisure time increase for the middle and upper classes?<br>${choices.s20}`,
         answer: 'd'
     }
 }
