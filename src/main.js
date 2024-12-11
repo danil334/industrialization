@@ -242,7 +242,12 @@ document.addEventListener("keydown", jump, false);
 function jump(event) {
   if (started) {
     if (event.which == 32) {
-      showQuiz();
+      if (zone.mesh.visible == true && sphereBody.position.y != zoneBody.position.y) {
+        showQuiz();
+        setTimeout(() => {
+          zone.mesh.visible = false;
+        }, 1000);
+      }
       if (player.mesh.position.y <= 1) {
         stopped = false;
         sphereBody.applyImpulse(impulseJump);
